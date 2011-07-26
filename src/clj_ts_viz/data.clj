@@ -7,14 +7,14 @@
 (def example-raw
   [{:id 0
     :balances
-    [{:balance 0 :timestamp 1311638600}
-     {:balance 0 :timestamp 1311638601}
-     {:balance 0 :timestamp 1311638602}
-     {:balance 0 :timestamp 1311638603}
-     {:balance 0 :timestamp 1311638604}
-     {:balance 0 :timestamp 1311638605}
-     {:balance 0 :timestamp 1311638606}
-     {:balance 0 :timestamp 1311638607}]
+    [{:balance 100 :timestamp 1311638600}
+     {:balance 150 :timestamp 1311638601}
+     {:balance 200 :timestamp 1311638602}
+     {:balance 150 :timestamp 1311638603}
+     {:balance 180 :timestamp 1311638604}
+     {:balance 160 :timestamp 1311638605}
+     {:balance 200 :timestamp 1311638606}
+     {:balance 210 :timestamp 1311638607}]
     :other-property 10}])
 
 (def example-clustered
