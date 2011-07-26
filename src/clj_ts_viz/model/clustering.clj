@@ -1,32 +1,33 @@
 (ns clj-ts-viz.model.clustering
   (:require [clj-ts-viz.data :as data])
-  (:use (incanter core stats)))			;; use :only
+  (:use (incanter core stats)))			;; use :only after complete
 
-(defrecord id-stats [id slope])
 
-(declare dimension-reduction)
 
-(defn cluster-ts
-  "Top level function that takes a dataset and returns a new dataset with a new column of cluster label"
-  [coll]
-  (let [sloped-coll	(map dimension-reduction coll)]))
-        ;; clustered-coll]))		;; work in progress
-
-;(def ts (dimension-reduction (first data/example-raw)))
-(defn dimension-reduction
+(defn- dimension-reduction
   "Reduce dimension of ts to static value(s)"
   [cell]
   (let [id				(:id cell)
         ts				(:balances cell)
-        ds				(to-dataset ts)
-        time			($ :timestamp ds)
-        balance		($ :balance ds)
-       	lm				(linear-model balance time)		;; java.lang.IllegalArgumentException: Matrix is singular.
+        time			(map :timestamp (:balances cell))
+        balance		(map :balance (:balances cell))
+       	lm				(linear-model balance time)
        	slope			(last (:coefs lm))]		;; y ~ a + b(x), where b is slope
     (assoc cell :slope slope)))
 
-(defn fetch-slopes
+(defn- fetch-slopes-quantiles
   "Fetch all the slopes of the collection as a collection"
-  [coll]
-  (let [[x & coll]	coll]
-  	(cons (:slope x) (fetch-slopes coll))))
+  [n coll]
+  (let [slopes			(map :slope coll)
+        quantiles		(map #(/ % n) (range 1 n))]
+    (quantile slopes :probs quantiles)))      
+
+(defn add-cluster-col
+  "Top level function that takes a dataset and returns a new dataset with a new column of cluster label"
+  [n coll]
+  (let [sloped-coll	(map dimension-reduction coll)]))
+        ;; clustered-coll]))		;; work in progress
+
+; testing only        
+(def data (data/gen-dataset))		
+(def sc (map dimension-reduction data))
