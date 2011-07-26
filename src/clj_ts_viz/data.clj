@@ -1,5 +1,6 @@
 (ns clj-ts-viz.data
-  (:require [clojure.contrib.json :as json]))
+  (:require [clojure.contrib.json :as json])
+  (:require [clojure.contrib.probabilities.monte-carlo :as mc]))
 
 (def live-data (atom nil))
 
@@ -29,3 +30,22 @@
      {:balance 0 :timestamp 1311638606}
      {:balance 0 :timestamp 1311638607}]
     :other-property 10}])
+
+(defn load-json [fname]
+  (json/read-json (slurp fname)))
+
+(defn jitter-timeline-piece [[timestamp balance]]
+  [(+ (- (rand-int (* 2 86400)) 86400) timestamp)
+   (* (+ 1.0 (- (rand 0.20) 0.05)) balance)])
+
+(defn jitter-timeline [timeline]
+  (sort-by first (map jitter-timeline-piece timeline)))
+
+(defn jitter [record]
+  "Jitters the data, just to make it un-recognizable."
+  {:id             (hash (str (:uname record) "-salt:" (rand)))
+   :fake-score     (+ (:score record) (- (rand-int 50) 25))
+   :timeline       (jitter-timeline (:timeline record))})
+
+;;(defn generate-random-record
+;; (dist/draw (dist/normal-distribution -2 (sqrt 0.5)))
