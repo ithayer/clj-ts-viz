@@ -2,11 +2,29 @@
             
     $(document).ready(function() {
 
-        $.each(finData, function(i, cur) {
+        var toCluster = function(obj, cur) {
+            var clust = cur.cluster;
+            if(!obj[clust]) { obj[clust] = []; }
 
+            obj[clust].push(cur);
+            return obj;
+        };
+        
+        var clusters = _.reduce(finData, toCluster, {});
 
-            var times = $.map(cur.balances, function(val) { return val.timestamp;}),
-            balances = $.map(cur.balances, function (val) {return val.balance; });
+        _.each(clusters, function(cur, i) {
+
+            var balances = _.flatten(_.reduce(cur, function(list, user) {
+                                var userBalances = _.map(user.balances, function(ub) { return ub.balance; })
+                                list.push(userBalances);
+                                return list;
+                            }, []));
+
+            var times = _.flatten(_.reduce(cur, function(list, user) {
+                                var userTimes = _.map(user.balances, function(ub) { return ub.timestamp; })
+                                list.push(userTimes);
+                                return list;
+                            }, []));
 
             var w = 600,
             h = 300,
@@ -17,8 +35,6 @@
             yscale = d3.scale.linear().domain([0, d3.max(balances)]).range([0 + bottomMargin, h - topMargin]),
             xscale = d3.scale.linear().domain([d3.min(times), d3.max(times)]).range([0 + leftMargin, w - rightMargin]);
 
-            var dots = [1,2,3];
-
             //do d3 awesomeness here
             var viz = d3.select("#vizContainer")
                         .append("svg:svg")
@@ -28,12 +44,15 @@
             var g = viz.append("svg:g")
                         .attr("transform", "translate(0, 300)");
 
-            var line = d3.svg.line()
-                        .x(function(d) {return xscale(d.timestamp)})
-                        .y(function(d) {return -1 * yscale(d.balance)});
+            _.each(cur, function(userLine, i) {
+                var line = d3.svg.line()
+                            .x(function(d) {return xscale(d.timestamp)})
+                            .y(function(d) {return -1 * yscale(d.balance)});
 
-            g.append("svg:path").attr("d", line(cur.balances))
-                .attr("class", "line");
+                g.append("svg:path").attr("d", line(userLine.balances))
+                    .attr("class", "line" + i);
+            });
+
 
             g.append("svg:line")
                 .attr("class", "edge")

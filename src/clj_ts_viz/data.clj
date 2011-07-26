@@ -29,7 +29,32 @@
      {:balance 580 :timestamp 1311638605}
      {:balance 900 :timestamp 1311638606}
      {:balance 1230 :timestamp 1311638607}]
+    :other-property 10}
+   {:id 1
+    :cluster 1
+    :balances
+    [{:balance 400 :timestamp 1311638600}
+     {:balance 900 :timestamp 1311638601}
+     {:balance 700 :timestamp 1311638602}
+     {:balance 1000 :timestamp 1311638603}
+     {:balance 40 :timestamp 1311638604}
+     {:balance 80 :timestamp 1311638605}
+     {:balance 900 :timestamp 1311638606}
+     {:balance 1030 :timestamp 1311638607}]
+    :other-property 10}
+   {:id 2
+    :cluster 2
+    :balances
+    [{:balance 400 :timestamp 1311638600}
+     {:balance 900 :timestamp 1311638601}
+     {:balance 700 :timestamp 1311638602}
+     {:balance 1000 :timestamp 1311638603}
+     {:balance 40 :timestamp 1311638604}
+     {:balance 80 :timestamp 1311638605}
+     {:balance 900 :timestamp 1311638606}
+     {:balance 1030 :timestamp 1311638607}]
     :other-property 10}])
+
 
 (defn load-json [fname]
   (json/read-json (slurp fname)))
