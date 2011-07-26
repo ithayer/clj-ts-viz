@@ -9,7 +9,8 @@
 (defn cluster-ts
   "Top level function that takes a dataset and returns a new dataset with a new column of cluster label"
   [coll]
-  (map dimension-reduction col))		;; work-in-progress
+  (let [sloped-coll	(map dimension-reduction coll)]))
+        ;; clustered-coll]))		;; work in progress
 
 ;(def ts (dimension-reduction (first data/example-raw)))
 (defn dimension-reduction
@@ -26,4 +27,6 @@
 
 (defn fetch-slopes
   "Fetch all the slopes of the collection as a collection"
-  [col]
+  [coll]
+  (let [[x & coll]	coll]
+  	(cons (:slope x) (fetch-slopes coll))))
