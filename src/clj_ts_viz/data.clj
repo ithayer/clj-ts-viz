@@ -15,7 +15,18 @@
      {:balance 160 :timestamp 1311638605}
      {:balance 200 :timestamp 1311638606}
      {:balance 210 :timestamp 1311638607}]
-    :other-property 10}])
+    :other-property 10},
+   {:id 1
+    :balances
+    [{:balance 300 :timestamp 1311638700}
+     {:balance 250 :timestamp 1311638701}
+     {:balance 300 :timestamp 1311638702}
+     {:balance 200 :timestamp 1311638703}
+     {:balance 380 :timestamp 1311638704}
+     {:balance 360 :timestamp 1311638705}
+     {:balance 300 :timestamp 1311638706}
+     {:balance 310 :timestamp 1311638707}]
+    :other-property 20}])
 
 (def example-clustered
   [{:id 0
