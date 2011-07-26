@@ -53,7 +53,24 @@
         y (- (* 2 (rand)) 1.0)
         r (+ (* x x) (* y y))]
     (if (or (> r 1) (== r 0))
-      (box-muller)
+      (box-muller mean variance)
       (let [k (* x (Math/sqrt (/ (* -2.0 (Math/log r)) r)))]
         (+ mean (* (Math/sqrt variance) x))))))
 
+(defn gen-line [start length step-mean step-variance]
+  (map vector
+       (iterate inc 0)
+       (map (partial + start)
+            (reductions
+             - (map (fn [_] (box-muller step-mean step-variance)) (range 0 length))))))
+
+(defn gen-member [id balance-args]
+  {:id id
+   :balance (apply gen-line balance-args)})
+
+(defn gen-dataset []
+  (into (map (range 0 5) #(gen-line 1000 100 5 1))
+        (map (range 0 5) #(gen-line 600 100 2 2))))
+                
+  
+  
