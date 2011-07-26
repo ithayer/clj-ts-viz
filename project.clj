@@ -5,4 +5,3 @@
                            [clj-json "0.3.2"]
                            [incanter "1.2.3"]]
             :main clj-ts-viz.server)
-
