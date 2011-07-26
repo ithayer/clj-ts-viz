@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 pom.xml
 *jar
 /lib/
 /classes/
 .lein-deps-sum
+=======
+classes/
+lib/
+*.jar
+*.swp
+>>>>>>> 00c3ef0dcb32cddc6f7c8e0598cc13567b3a1651
