@@ -2,17 +2,32 @@
   (:require [clj-ts-viz.data :as data])
   (:use (incanter core stats)))			;; use :only after complete
 
-(defn- get-slope
-  "Reduce dimension of ts to static value(s)"
+(defn get-id
+  "Getter method for user-id"
   [cell]
-  {:pre		[(:id cell) (seq (:balances cell))]		;; assert cell is of correct struct
-   :post	[(number? %)]}		
-  (let [id				(:id cell)
-        ts				(:balances cell)
-        time			(map :timestamp (:balances cell))
-        balance		(map :balance (:balances cell))
-       	lm				(linear-model balance time)
-       	slope			(last (:coefs lm))]		;; y ~ a + b(x), where b is slope
+  {:pre	[(:id cell)]}								;; throws assert for debug clarity
+  (:id cell))
+
+(defn get-balances
+  "Getter method for balances time-series"
+  [cell]
+  {:pre	[(seq (:balances cell))]}		;; throws assert for debug clarity
+  (:balances cell))
+
+(defn get-time-balance
+  "Getter method for time and balance vectors"
+  [balances-ts]
+  [(map :timestamp balances-ts) (map :balance balances-ts)])
+
+(defn- get-slope
+  "Reduce dimension of balances time-series to a descriptive parameter, slope"
+  [cell]
+  {:post	[(number? %)]}		
+  (let [id							(get-id cell)
+        bal-ts					(get-balances cell)
+        [time balance]	(get-time-balance bal-ts)
+       	lm							(linear-model balance time)
+       	slope						(last (:coefs lm))]		;; y ~ a + b(x), where b is slope
     slope))
 
 (def ^{:private true
