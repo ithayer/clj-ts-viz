@@ -15,7 +15,18 @@
      {:balance 160 :timestamp 1311638605}
      {:balance 200 :timestamp 1311638606}
      {:balance 210 :timestamp 1311638607}]
-    :other-property 10}])
+    :other-property 10},
+   {:id 1
+    :balances
+    [{:balance 300 :timestamp 1311638700}
+     {:balance 250 :timestamp 1311638701}
+     {:balance 300 :timestamp 1311638702}
+     {:balance 200 :timestamp 1311638703}
+     {:balance 380 :timestamp 1311638704}
+     {:balance 360 :timestamp 1311638705}
+     {:balance 300 :timestamp 1311638706}
+     {:balance 310 :timestamp 1311638707}]
+    :other-property 20}])
 
 (def example-clustered
   [{:id 0
@@ -78,7 +89,24 @@
         y (- (* 2 (rand)) 1.0)
         r (+ (* x x) (* y y))]
     (if (or (> r 1) (== r 0))
-      (box-muller)
+      (box-muller mean variance)
       (let [k (* x (Math/sqrt (/ (* -2.0 (Math/log r)) r)))]
         (+ mean (* (Math/sqrt variance) x))))))
 
+(defn gen-line [start length step-mean step-variance]
+  (map vector
+       (iterate inc 0)
+       (map (partial + start)
+            (reductions
+             - (map (fn [_] (box-muller step-mean step-variance)) (range 0 length))))))
+
+(defn gen-member [id balance-args]
+  {:id id
+   :balance (apply gen-line balance-args)})
+
+(defn gen-dataset []
+  (into (map (range 0 5) #(gen-line 1000 100 5 1))
+        (map (range 0 5) #(gen-line 600 100 2 2))))
+                
+  
+  
