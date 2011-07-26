@@ -7,8 +7,9 @@
 (declare dimension-reduction)
 
 (defn cluster-ts
-  [col]
-  (map dimension-reduction col))
+  "Top level function that takes a dataset and returns a new dataset with a new column of cluster label"
+  [coll]
+  (map dimension-reduction col))		;; work-in-progress
 
 ;(def ts (dimension-reduction (first data/example-raw)))
 (defn dimension-reduction
@@ -21,8 +22,8 @@
         balance		($ :balance ds)
        	lm				(linear-model balance time)		;; java.lang.IllegalArgumentException: Matrix is singular.
        	slope			(last (:coefs lm))]		;; y ~ a + b(x), where b is slope
-    (id-stats. id slope)))
+    (assoc cell :slope slope)))
 
-(defn sift-through-data
+(defn fetch-slopes
+  "Fetch all the slopes of the collection as a collection"
   [col]
-  (map dimension-reduction col))
