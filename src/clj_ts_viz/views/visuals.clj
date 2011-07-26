@@ -9,7 +9,7 @@
 
 (defpage "/" []
          (common/layout
-           [:script "var finData = " (json/generate-string data/example-clustered)]
+           [:script "var finData = " (json/generate-string @data/live-data)]
            [:h1 "Welcome to clj-ts-viz"]
            [:div#vizContainer ]))
 
