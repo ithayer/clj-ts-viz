@@ -1,6 +1,6 @@
 (ns clj-ts-viz.data
   (:require [clojure.contrib.json :as json])
-  (:require [clojure.contrib.probabilities.monte-carlo :as mc]))
+  (:require [incanter.stats :as stats]))
 
 (def live-data (atom nil))
 
@@ -47,5 +47,13 @@
    :fake-score     (+ (:score record) (- (rand-int 50) 25))
    :timeline       (jitter-timeline (:timeline record))})
 
-;;(defn generate-random-record
-;; (dist/draw (dist/normal-distribution -2 (sqrt 0.5)))
+(defn box-muller [mean variance]
+  ""
+  (let [x (- (* 2 (rand)) 1.0)
+        y (- (* 2 (rand)) 1.0)
+        r (+ (* x x) (* y y))]
+    (if (or (> r 1) (== r 0))
+      (box-muller)
+      (let [k (* x (Math/sqrt (/ (* -2.0 (Math/log r)) r)))]
+        (+ mean (* (Math/sqrt variance) x))))))
+
