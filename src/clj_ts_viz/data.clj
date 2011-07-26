@@ -94,7 +94,7 @@
         (+ mean (* (Math/sqrt variance) x))))))
 
 (defn gen-line [start length step-mean step-variance]
-  (map vector
+  (map (fn [ts b] {:balance b :timestamp ts})
        (iterate #(+ % 86400000) 1311648793)
        (map (partial + start)
             (reductions
@@ -103,7 +103,7 @@
 (defn gen-member [id balance-args cluster]
   {:id id
    :cluster cluster
-   :balance (apply gen-line balance-args)})
+   :balances (apply gen-line balance-args)})
 
 (defn gen-dataset []
   (into (map #(gen-member % [1000 100 5 1] 0) (range 0 5))
