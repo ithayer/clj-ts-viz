@@ -59,18 +59,19 @@
 
 (defn gen-line [start length step-mean step-variance]
   (map vector
-       (iterate inc 0)
+       (iterate #(+ % 86400000) 1311648793)
        (map (partial + start)
             (reductions
              - (map (fn [_] (box-muller step-mean step-variance)) (range 0 length))))))
 
-(defn gen-member [id balance-args]
+(defn gen-member [id balance-args cluster]
   {:id id
+   :cluster cluster
    :balance (apply gen-line balance-args)})
 
 (defn gen-dataset []
-  (into (map (range 0 5) #(gen-line 1000 100 5 1))
-        (map (range 0 5) #(gen-line 600 100 2 2))))
+  (into (map #(gen-member % [1000 100 5 1] 0) (range 0 5))
+        (map #(gen-member % [600 100 2 2] 1) (range 5 10))))
                 
   
   

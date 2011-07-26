@@ -8,9 +8,7 @@
   (let [mode (keyword (or (first m) :dev))
         port (Integer. (get (System/getenv) "PORT" "8000"))]
     (let [compute-correlation-fn nil
-          result (if compute-correlation-fn
-                   (compute-correlation-fn data/example-raw)
-                   data/example-clustered)]
+          result (data/gen-dataset)]
       (reset! data/live-data result)
       (server/start port {:mode mode
                           :ns 'clj-ts-viz}))))
