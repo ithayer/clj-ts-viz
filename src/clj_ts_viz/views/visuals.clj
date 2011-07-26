@@ -7,5 +7,6 @@
 
 (defpage "/" []
          (common/layout
-           [:p "Welcome to clj-ts-viz"]))
+           [:h1 "Welcome to clj-ts-viz"]
+           [:div#vizContainer ]))
 
