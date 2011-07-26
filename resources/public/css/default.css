@@ -9,3 +9,8 @@ line, path { stroke: #99f; stroke-width: 3px; fill:none;}
 .dot { fill:#99f; }
 .line { stroke: #99f; stroke-width: 3px; fill:none;}
 
+.line1 {stroke: #9f9;}
+.line2 {stroke: #f99;}
+.line3 {stroke: #9ff;}
+.line4 {stroke: #ff9;}
+.line5 {stroke: #fff;}
