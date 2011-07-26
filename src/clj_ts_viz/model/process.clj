@@ -18,11 +18,18 @@
   [balances-ts]
   [(map :timestamp balances-ts) (map :balance balances-ts)])
 
+(defn get-clusters
+  "Returns a sorted set of cluster values"
+  [coll]
+  (into (sorted-set) (map :cluster coll)))
+
 (defn set-cluster
   "Setter method for adding cluster key/val to a cell"
   [cluster cell]
   {:pre	[(number? cluster) (map? cell)]}
   (assoc cell :cluster cluster))
+
+;; TODO: abstract out dimension reduction for different descriptive statistics
 
 (defn- get-slope
   "Reduce dimension of balances time-series to a descriptive parameter, slope"

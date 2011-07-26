@@ -14,7 +14,7 @@
   (let	[slope		(get-slope-memo cell)		; TODO: abstract out to generalize
          q-checks	(map (partial <= slope) quantiles)
          idx			(.indexOf q-checks true)		; returns -1 if not found
-         quantile	(if (= idx -1) (inc (count quantiles)) idx)]
+         quantile	(if (= idx -1) (count quantiles) idx)]
     (set-cluster quantile cell)))
 
 (defn quantile-partition

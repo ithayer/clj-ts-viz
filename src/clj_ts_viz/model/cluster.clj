@@ -1,5 +1,5 @@
 (ns clj-ts-viz.model.cluster  
-  (:use (clj-ts-viz.model qpart kmeans)))
+  (:use (clj-ts-viz.model qpart)))
 
 (defn add-cluster-col
   "Top level function that takes a dataset and returns a new dataset with a new column of cluster label"
