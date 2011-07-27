@@ -1,6 +1,8 @@
 (ns clj-ts-viz.model.kmeans
-  (:use clj-ts-viz.model.process))
-
+  "k-means clustering"
+  (:use clj-ts-viz.model.process)
+  (:use [clojure.contrib.math :only (floor)])
+  (:use (incanter [stats :only (mean)])))
 
 (defn- random-parition
   "Randomly assign a cluster for initialization"
@@ -14,14 +16,21 @@
   "Calculate the mean for a given cluster"
   [coll cluster]
   (let [subset	(filter #(= (:cluster %) cluster) coll)
-        slopes	(get-slopes subset)]		; TODO: generalize
+        slopes	(get-slopes subset)]		; TODO generalize
+    (mean slopes)))
+
+;; TODO (i) slopes-only, (ii) slopes and means, (iii) generalize 
+
+(comment
 
 (defn kmeans-cluster
   "Takes a dataset and returns a new dataset with a new column of cluster label using quantile paritioning"
   [coll n]
-  (let [slopes		(get-slopes coll)		; TODO: abstract out to generalize
+  (let [slopes		(get-slopes coll)		; TODO abstract out to generalize
         quantiles	(get-quantiles slopes n)]
     (map (partial set-quantile-partition quantiles) coll)))
+
+) ; end of comment
 
 ;; testing only   
 (require '[clj-ts-viz.data :as data])

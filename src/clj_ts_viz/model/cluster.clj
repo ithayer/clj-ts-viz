@@ -6,6 +6,8 @@
   [coll n]
   (quantile-partition coll n))
 
+;; TODO split data into training and test sets for analysis
+
 ;; testing only   
 ;(require '[clj-ts-viz.data :as data])
 ;(def data (data/gen-dataset))
